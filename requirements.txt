@@ -6,3 +6,4 @@ opencv-python-headless
 streamlit
 streamlit_webrtc
 ultralytics
+tensorflow
