@@ -64,25 +64,29 @@ def predict_using_embedding(embedding, gender_model, age_model, ethnicity_model)
     ethnicity = ethnicity_labels.get(ethnicity[0], 'Unknown')
 
     return gender, age, ethnicity
-def process_frame(frame):
+def process_frame(frame_):
+    try:
+        frame=cv2.resize(frame_, (1048, 720))
     
-    frame=cv2.resize(frame, (1048, 720))
+        faces = detect_face(frame, model)
+    
+        if faces is not None:
+            for face in faces:
+                x1, y1, x2, y2=face
+                face_frame = frame[y1:y2, x1:x2]
+                # Convert the face image to its embedding
+                embedding = image_to_embedding(face_frame)
+                # Make predictions
+                gender, age, ethnicity  = predict_using_embedding(embedding, gender_clf, age_regressor, ethnicity_clf)
+                x1, y1, x2, y2=face
+                # Display results
+                cv2.putText(frame, f"{gender}, {int(float(age))}, {ethnicity}", (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
+        return frame
+    except:
+        return frame_
 
-    faces = detect_face(frame, model)
 
-    if faces is not None:
-        for face in faces:
-            x1, y1, x2, y2=face
-            face_frame = frame[y1:y2, x1:x2]
-            # Convert the face image to its embedding
-            embedding = image_to_embedding(face_frame)
-            # Make predictions
-            gender, age, ethnicity  = predict_using_embedding(embedding, gender_clf, age_regressor, ethnicity_clf)
-            x1, y1, x2, y2=face
-            # Display results
-            cv2.putText(frame, f"{gender}, {int(float(age))}, {ethnicity}", (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
-    return frame
 if __name__=='__main__':
     frame=cv2.imread('man_904.jpg')
     frame=process_frame(frame)
