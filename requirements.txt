@@ -2,7 +2,7 @@ av
 joblib
 keras_facenet
 numpy
-opencv-python
+opencv-python-headless
 streamlit
 streamlit_webrtc
 ultralytics
