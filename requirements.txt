@@ -1,8 +1,8 @@
-av==10.0.0
-joblib==1.2.0
-keras_facenet==0.3.2
-numpy==1.23.5
+av
+joblib
+keras_facenet
+numpy
 opencv-python
-streamlit==1.27.2
-streamlit_webrtc==0.47.1
-ultralytics==8.0.199
+streamlit
+streamlit_webrtc
+ultralytics
